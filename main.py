@@ -74,7 +74,8 @@ class Submission(db.Model):
     def __repr__(self):
         return f'<User ID {self.user_id} score {self.score}>'
 
-db.create_all()
+with app.app_context():
+    db.create_all()
 
 # Admin
 class MyAdminIndexView(AdminIndexView):
