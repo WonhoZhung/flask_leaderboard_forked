@@ -12,19 +12,20 @@ from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.model import BaseModelView
 
-from sklearn.metrics import mean_absolute_error
+#from sklearn.metrics import mean_absolute_error
 
 from forms import LoginForm, RegisterForm
 from config import Config
-from scorer import Scorer
+#from scorer import Scorer
+from sandbox import MyScorer, my_metric
 
 # PARAMETER
 
 ## Leaderboard parameter
 limit_lb = 100 # Number of user showed at leaderboard table
 greater_better = False # True if lowest score is the best; False if greatest score is the best
-metric = mean_absolute_error #change the metric using sklearn function
-scorer = Scorer(public_path = './master_key/public_key.csv', 
+metric = my_metric #change the metric using sklearn function
+scorer = MyScorer(public_path = './master_key/public_key.csv', 
                 private_path = './master_key/private_key.csv', 
                 metric = metric) #change the metric using sklearn function
 
@@ -41,6 +42,8 @@ app.config.from_object(Config)
 
 ## Database configuration
 db = SQLAlchemy(app)
+with app.app_context():
+    bind = db.session.get_bind()
 db.app = app
 migrate = Migrate(app, db)
 login = LoginManager(app)
@@ -141,8 +144,9 @@ def get_leaderboard(greater_better, limit, submission_type = 'public'):
             ORDER BY 2 {score_sorting}, 4
             LIMIT {limit}
             """
-    df = pd.read_sql(query, 
-                    db.session.bind)
+
+    with app.app_context():
+        df = pd.read_sql(query, bind)
     return df
 
 # Route
@@ -188,12 +192,13 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET', 'POST'])
 def home_page():
-    login_form = LoginForm()
-    login_status = request.args.get("login_status", "")
-    submission_status = request.args.get("submission_status", "")
-
-    leaderboard = get_leaderboard(greater_better = greater_better, limit = limit_lb, submission_type='public')
-    leaderboard_private = get_leaderboard(greater_better = greater_better, limit = limit_lb, submission_type='private')
+    with app.app_context():
+        login_form = LoginForm()
+        login_status = request.args.get("login_status", "")
+        submission_status = request.args.get("submission_status", "")
+    
+        leaderboard = get_leaderboard(greater_better = greater_better, limit = limit_lb, submission_type='public')
+        leaderboard_private = get_leaderboard(greater_better = greater_better, limit = limit_lb, submission_type='private')
 
     if request.method == 'POST': # If upload file / Login
         ### LOGIN 
@@ -258,5 +263,5 @@ def home_page():
     )
 
 if __name__ == '__main__':
-    app.debug = True
-    app.run(host = '0.0.0.0',port=5005)
+    app.debug = False
+    app.run(host = '0.0.0.0', port=1201)

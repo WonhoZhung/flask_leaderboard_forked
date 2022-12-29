@@ -1,11 +1,16 @@
-from main import Submission, User
+from flask import Flask
+from main import Submission, User, app
 
-subs = Submission.query.all()
+with app.app_context():
+    subs = Submission.query.all()
 print("SUBMISSION: ")
 for sub in subs:
     print(sub.user_id, sub.score)
 
-users = User.query.all()
+print()
+
+with app.app_context():
+    users = User.query.all()
 print("USERS: ")
 for user in users:
     print(user.username, user.password)
