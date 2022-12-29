@@ -1,3 +1,6 @@
+# CH453 Final Project Online Leaderboard (2022 Fall)
+Using a fork version of Flask-based leaderboard 
+
 # Flask Leaderboard
 Make simple leaderboard for machine learning competition using Flask
 
@@ -69,12 +72,12 @@ Ensure the metric you choose align with the `greater_better` parameter
 
 ### Run Flask App
 in your terminal, run `python main.py` <br>
-Then you will see a page open in your browser with url `http://localhost:5005/`
+Then you will see a page open in your browser with url `http://143.248.247.169:1201`
 
 ### Make Admin account
-Go to register page `http://localhost:5005/register` or click register button at the top left <br> 
+Go to register page `http://143.248.247.169:1201/register` or click register button at the top left <br> 
 Then perserve `admin` username, the `password` is up to you. <br>
-You can go to `http://localhost:5005/admin` by login with `admin` username. <br>
+You can go to `http://143.248.247.169:1201/admin` by login with `admin` username. <br>
 At that page, you can manage users and submissions (create, read, update, and delete)
 
 *If you forgot your admin password* 
@@ -91,14 +94,14 @@ just delete `app.db` file
 - [Submit](#submit)
 
 ### Connect to leaderboard
-Go to `http://localhost:5005/`
+Go to `http://143.248.247.169:1201`
 
 ### Register
-Go to register page `http://localhost:5005/register` or click register button at the top left <br> 
+Go to register page `http://143.248.247.169:1201/register` or click register button at the top left <br> 
 Add your `username` and `password` then click register
 
 ### Login
-Go back to home page `http://localhost:5005/` or click home button <br> 
+Go back to home page `http://143.248.247.169:1201` or click home button <br> 
 Put your registered `username` and `password` then login <br> 
 If you forget your password, please contact admin or register new account
 
